@@ -5,10 +5,18 @@
 import nodemailer from 'nodemailer';
 import { config } from '../config/unifiedConfig.js';
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 const transporter = nodemailer.createTransport({
   host: process.env.MAIL_HOST || 'localhost',
-  port: process.env.MAIL_PORT || 1025,
-  secure: false, // true for 465, false for other ports
+  port: parseInt(process.env.MAIL_PORT) || 1025,
+  secure: process.env.MAIL_SECURE === 'true',
+  ...(isProduction && {
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS,
+    },
+  }),
 });
 
 export const sendEmail = async ({ to, subject, html }) => {
