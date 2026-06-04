@@ -68,13 +68,13 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text p-6 max-w-7xl mx-auto">
-      <header className="flex justify-between items-center mb-8 border-b border-border pb-4">
-        <div>
-          <h1 className="text-2xl font-bold">Painel de Tarefas</h1>
-          <p className="text-textMuted">Bem-vindo de volta, {user?.name}</p>
+    <div className="min-h-screen bg-background text-text p-4 sm:p-6 max-w-7xl mx-auto">
+      <header className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-8 border-b border-border pb-4">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-bold">Painel de Tarefas</h1>
+          <p className="text-textMuted text-sm sm:text-base truncate">Bem-vindo de volta, {user?.name}</p>
         </div>
-        <Button variant="secondary" onClick={logout} className="flex items-center gap-2">
+        <Button variant="secondary" onClick={logout} className="flex items-center gap-2 self-end sm:self-auto shrink-0">
           <LogOut size={18} /> Sair
         </Button>
       </header>
@@ -95,19 +95,19 @@ export default function Dashboard() {
       </div>
 
       {/* Controls */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+        <div className="flex gap-2 overflow-x-auto pb-1 -mb-1 scrollbar-hide">
           {['ALL', 'PENDING', 'IN_PROGRESS', 'COMPLETED'].map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1 rounded-full text-sm transition-colors ${filter === f ? 'bg-primary text-white' : 'bg-surface text-textMuted hover:text-text'}`}
+              className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${filter === f ? 'bg-primary text-white' : 'bg-surface text-textMuted hover:text-text'}`}
             >
               {filterLabels[f]}
             </button>
           ))}
         </div>
-        <Button onClick={() => { setEditingTask(null); setIsModalOpen(true); }} className="flex items-center gap-2">
+        <Button onClick={() => { setEditingTask(null); setIsModalOpen(true); }} className="flex items-center justify-center gap-2 w-full sm:w-auto shrink-0">
           <Plus size={18} /> Nova Tarefa
         </Button>
       </div>

@@ -25,3 +25,12 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-border;
 }
+
+/* Hide scrollbar for filter pills on mobile */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
