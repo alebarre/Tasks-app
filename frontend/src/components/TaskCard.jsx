@@ -1,4 +1,5 @@
 import { formatDistanceToNow, isPast } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Card } from './ui';
 import { cn } from './ui';
@@ -44,10 +45,10 @@ export default function TaskCard({ task, onEdit, onDelete }) {
       </div>
 
       <div className="text-xs text-textMuted flex justify-between mt-2 pt-2 border-t border-border">
-        <span>Criada: {new Date(task.createdAt).toLocaleDateString()}</span>
+        <span>Criada: {new Date(task.createdAt).toLocaleDateString('pt-BR')}</span>
         {task.dueDate && (
           <span className={cn(isOverdue && "text-danger font-semibold")}>
-            Vence {formatDistanceToNow(new Date(task.dueDate), { addSuffix: true })}
+            Vence {formatDistanceToNow(new Date(task.dueDate), { addSuffix: true, locale: ptBR })}
           </span>
         )}
       </div>

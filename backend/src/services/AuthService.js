@@ -38,7 +38,7 @@ export class AuthService {
     });
 
     try {
-      const verifyUrl = `http://localhost:5173/verify?token=${verificationToken}`;
+      const verifyUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/verify?token=${verificationToken}`;
       await sendEmail({
         to: user.email,
         subject: 'Bem-vindo ao TaskApp - Verifique seu e-mail',
@@ -112,7 +112,7 @@ export class AuthService {
       resetPasswordExpires
     });
 
-    const resetUrl = `http://localhost:5173/reset-password?token=${resetToken}`;
+    const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
     await sendEmail({
       to: user.email,
       subject: 'TaskApp - Solicitação de Redefinição de Senha',
@@ -149,7 +149,7 @@ export class AuthService {
   async me(userId) {
     const user = await this.userRepository.findById(userId);
     if (!user) {
-      const error = new Error('User not found');
+      const error = new Error('Usuário não encontrado');
       error.statusCode = 404;
       throw error;
     }

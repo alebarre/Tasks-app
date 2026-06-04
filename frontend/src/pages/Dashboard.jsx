@@ -53,6 +53,13 @@ export default function Dashboard() {
 
   const filteredTasks = tasks.filter(t => filter === 'ALL' || t.status === filter);
   
+  const filterLabels = {
+    ALL: 'Todas',
+    PENDING: 'Pendentes',
+    IN_PROGRESS: 'Em Progresso',
+    COMPLETED: 'Concluídas',
+  };
+
   const stats = {
     total: tasks.length,
     pending: tasks.filter(t => t.status === 'PENDING').length,
@@ -96,7 +103,7 @@ export default function Dashboard() {
               onClick={() => setFilter(f)}
               className={`px-3 py-1 rounded-full text-sm transition-colors ${filter === f ? 'bg-primary text-white' : 'bg-surface text-textMuted hover:text-text'}`}
             >
-              {f.replace('_', ' ')}
+              {filterLabels[f]}
             </button>
           ))}
         </div>

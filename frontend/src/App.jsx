@@ -11,7 +11,7 @@ function PrivateRoute({ children }) {
   const { signed, loading } = useAuth();
   
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <div className="min-h-screen flex items-center justify-center">Carregando...</div>;
   }
   
   return signed ? children : <Navigate to="/login" />;
