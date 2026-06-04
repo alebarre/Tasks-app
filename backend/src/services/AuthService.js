@@ -149,7 +149,7 @@ export class AuthService {
   async me(userId) {
     const user = await this.userRepository.findById(userId);
     if (!user) {
-      const error = new Error('User not found');
+      const error = new Error('Usuário não encontrado');
       error.statusCode = 404;
       throw error;
     }

@@ -35,13 +35,13 @@ export class TaskService {
   async updateTask(taskId, userId, data) {
     const task = await this.taskRepository.findById(taskId);
     if (!task) {
-      const error = new Error('Task not found');
+      const error = new Error('Tarefa não encontrada');
       error.statusCode = 404;
       throw error;
     }
 
     if (task.userId !== userId) {
-      const error = new Error('Unauthorized');
+      const error = new Error('Não autorizado');
       error.statusCode = 403;
       throw error;
     }

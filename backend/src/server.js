@@ -30,14 +30,14 @@ app.use('/api/tasks', taskRoutes);
 
 // Tratamento de rotas inexistentes
 app.use((req, res, next) => {
-  res.status(404).json({ success: false, message: 'Route not found' });
+  res.status(404).json({ success: false, message: 'Rota não encontrada' });
 });
 
 // Middleware de tratamento de erros global
 app.use(errorHandler);
 
 app.listen(config.app.port, () => {
-  console.log(`Server is running on port ${config.app.port}`);
+  console.log(`Servidor rodando na porta ${config.app.port}`);
 });
 
 export default app;

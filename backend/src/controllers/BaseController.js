@@ -19,7 +19,7 @@ export class BaseController {
     console.error(`[${contextName}] Error:`, error); // Idealmente reportado ao Sentry
     
     const statusCode = error.statusCode || 500;
-    const message = error.message || 'Internal Server Error';
+    const message = error.message || 'Erro interno do servidor';
 
     return res.status(statusCode).json({
       success: false,
