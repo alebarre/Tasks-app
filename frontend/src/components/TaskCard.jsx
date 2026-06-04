@@ -25,7 +25,7 @@ export default function TaskCard({ task, onEdit, onDelete }) {
         <h3 className={cn("font-semibold text-lg", task.status === 'COMPLETED' && "line-through text-textMuted")}>
           {task.title}
         </h3>
-        <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
           <button onClick={() => onEdit(task)} className="text-textMuted hover:text-primary"><Pencil size={18} /></button>
           <button onClick={() => onDelete(task.id)} className="text-textMuted hover:text-danger"><Trash2 size={18} /></button>
         </div>
