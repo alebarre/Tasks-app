@@ -22,7 +22,7 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async ({ to, subject, html }) => {
   try {
     const info = await transporter.sendMail({
-      from: '"TaskApp" <noreply@taskapp.com>',
+      from: `"TaskApp" <${process.env.MAIL_USER || 'noreply@taskapp.com'}>`,
       to,
       subject,
       html,
