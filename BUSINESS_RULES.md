@@ -36,3 +36,17 @@
   - **PENDING** (Pendente) - Valor padrão na criação.
   - **IN_PROGRESS** (Em progresso)
   - **COMPLETED** (Concluída)
+
+### Prazo e Vencimento
+- **Vencida**: Uma tarefa com `dueDate` no passado e status diferente de **COMPLETED** é considerada vencida. O painel exibe "Vencida há X dias" em vermelho.
+- **Concluída após o prazo**: Se a tarefa foi concluída, ela nunca é marcada como vencida; o painel exibe "Venceu há X dias" sem destaque.
+- **Dentro do prazo**: Exibe "Vence em X dias".
+
+### Arquivamento
+- **Arquivar concluídas**: O usuário pode arquivar em lote, mediante confirmação, todas as suas tarefas com status **COMPLETED** ainda não arquivadas (`POST /tasks/archive-completed`). Apenas tarefas concluídas são afetadas.
+- **Sem tarefas concluídas**: Se não houver tarefas concluídas, a ação retorna `count: 0` e a interface informa ao usuário, sem alterar nada.
+- **Listagem principal**: Tarefas arquivadas (`archived = true`) não aparecem na listagem principal (`GET /tasks`) nem nas estatísticas do painel.
+- **Área de arquivadas**: A listagem `GET /tasks/archived` retorna somente as tarefas arquivadas do usuário, ordenadas pela data de arquivamento (`archivedAt`) mais recente.
+- **Reativar**: Uma tarefa arquivada pode voltar ao fluxo normal (`PATCH /tasks/:id/unarchive`), mantendo seu status original. Reativar uma tarefa que não está arquivada resulta em `400 Bad Request`.
+- **Excluir definitivamente**: A partir da área de arquivadas, a tarefa pode ser removida permanentemente (`DELETE /tasks/:id`), sem possibilidade de recuperação.
+- **Proteção**: Os campos `archived` e `archivedAt` não podem ser alterados diretamente pelas rotas de criação/edição de tarefa; apenas pelas rotas de arquivamento e reativação.

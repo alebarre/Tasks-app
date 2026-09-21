@@ -16,8 +16,11 @@ const taskController = new TaskController();
 router.use(authMiddleware);
 
 router.get('/', asyncErrorWrapper((req, res) => taskController.list(req, res)));
+router.get('/archived', asyncErrorWrapper((req, res) => taskController.listArchived(req, res)));
 router.post('/', validate(createTaskSchema), asyncErrorWrapper((req, res) => taskController.create(req, res)));
+router.post('/archive-completed', asyncErrorWrapper((req, res) => taskController.archiveCompleted(req, res)));
 router.put('/:id', validate(updateTaskSchema), asyncErrorWrapper((req, res) => taskController.update(req, res)));
+router.patch('/:id/unarchive', asyncErrorWrapper((req, res) => taskController.unarchive(req, res)));
 router.delete('/:id', asyncErrorWrapper((req, res) => taskController.delete(req, res)));
 
 export default router;

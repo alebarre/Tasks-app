@@ -40,6 +40,8 @@ model Task {
   priority    Priority  @default(LOW)
   status      Status    @default(PENDING)
   dueDate     DateTime?
+  archived    Boolean   @default(false)
+  archivedAt  DateTime?
   userId      String
   user        User      @relation(fields: [userId], references: [id])
   createdAt   DateTime  @default(now())

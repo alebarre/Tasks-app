@@ -1,6 +1,6 @@
-import { formatDistanceToNow, isPast } from 'date-fns';
+import { formatDistanceToNowStrict, isPast } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, RotateCcw } from 'lucide-react';
 import { Card } from './ui';
 import { cn } from './ui';
 
@@ -16,7 +16,22 @@ const statusColors = {
   COMPLETED: 'bg-success/20 text-success'
 };
 
-export default function TaskCard({ task, onEdit, onDelete }) {
+/**
+ * Monta o texto do prazo da tarefa:
+ * - vencida (fora do prazo e não concluída): "Vencida há X dias"
+ * - concluída após o prazo: "Venceu há X dias"
+ * - dentro do prazo: "Vence em X dias"
+ */
+function dueDateLabel(task, isOverdue) {
+  const dueDate = new Date(task.dueDate);
+  const distance = formatDistanceToNowStrict(dueDate, { locale: ptBR });
+
+  if (isOverdue) return `Vencida há ${distance}`;
+  if (isPast(dueDate)) return `Venceu há ${distance}`;
+  return `Vence em ${distance}`;
+}
+
+export default function TaskCard({ task, onEdit, onDelete, onRestore }) {
   const isOverdue = task.dueDate && isPast(new Date(task.dueDate)) && task.status !== 'COMPLETED';
 
   return (
@@ -26,11 +41,18 @@ export default function TaskCard({ task, onEdit, onDelete }) {
           {task.title}
         </h3>
         <div className="flex gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shrink-0">
-          <button onClick={() => onEdit(task)} className="text-textMuted hover:text-primary"><Pencil size={18} /></button>
-          <button onClick={() => onDelete(task.id)} className="text-textMuted hover:text-danger"><Trash2 size={18} /></button>
+          {onRestore && (
+            <button onClick={() => onRestore(task.id)} className="text-textMuted hover:text-success" title="Reativar tarefa" aria-label="Reativar tarefa"><RotateCcw size={18} /></button>
+          )}
+          {onEdit && (
+            <button onClick={() => onEdit(task)} className="text-textMuted hover:text-primary" title="Editar tarefa" aria-label="Editar tarefa"><Pencil size={18} /></button>
+          )}
+          {onDelete && (
+            <button onClick={() => onDelete(task.id)} className="text-textMuted hover:text-danger" title={onRestore ? 'Excluir definitivamente' : 'Excluir tarefa'} aria-label={onRestore ? 'Excluir definitivamente' : 'Excluir tarefa'}><Trash2 size={18} /></button>
+          )}
         </div>
       </div>
-      
+
       {task.description && (
         <p className="text-sm text-textMuted line-clamp-2">{task.description}</p>
       )}
@@ -42,13 +64,22 @@ export default function TaskCard({ task, onEdit, onDelete }) {
         <span className={cn("text-xs px-2 py-1 rounded-full", statusColors[task.status])}>
           {task.status === 'PENDING' ? 'PENDENTE' : task.status === 'IN_PROGRESS' ? 'EM PROGRESSO' : 'CONCLUÍDO'}
         </span>
+        {task.archived && (
+          <span className="text-xs px-2 py-1 rounded-full bg-surface text-textMuted border border-border">
+            ARQUIVADA
+          </span>
+        )}
       </div>
 
-      <div className="text-xs text-textMuted flex justify-between mt-2 pt-2 border-t border-border">
-        <span>Criada: {new Date(task.createdAt).toLocaleDateString('pt-BR')}</span>
+      <div className="text-xs text-textMuted flex justify-between gap-2 mt-2 pt-2 border-t border-border">
+        {task.archived && task.archivedAt ? (
+          <span>Arquivada: {new Date(task.archivedAt).toLocaleDateString('pt-BR')}</span>
+        ) : (
+          <span>Criada: {new Date(task.createdAt).toLocaleDateString('pt-BR')}</span>
+        )}
         {task.dueDate && (
           <span className={cn(isOverdue && "text-danger font-semibold")}>
-            Vence {formatDistanceToNow(new Date(task.dueDate), { addSuffix: true, locale: ptBR })}
+            {dueDateLabel(task, isOverdue)}
           </span>
         )}
       </div>

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh issue *)",
+      "Bash(curl -s \"https://api.github.com/repos/alebarre/Tasks-app/issues?state=open&per_page=50\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); [print\\(f\\\\\"#{i['number']} | {i['title']}\\\\n{i.get\\('body'\\) or ''}\\\\n---\\\\\"\\) for i in d if 'pull_request' not in i]\")",
+      "Bash(cd frontend *)",
+      "Read(//c/Projects/**)",
+      "Bash(npx eslint *)",
+      "Bash(npx vite *)"
+    ]
+  }
+}
