@@ -13,7 +13,7 @@ export class TaskController extends BaseController {
   }
 
   /**
-   * Lista tarefas do usuário
+   * Lista tarefas ativas do usuário
    */
   async list(req, res) {
     try {
@@ -21,6 +21,18 @@ export class TaskController extends BaseController {
       this.handleSuccess(res, tasks, 200);
     } catch (error) {
       this.handleError(error, res, 'TaskController.list');
+    }
+  }
+
+  /**
+   * Lista tarefas arquivadas do usuário
+   */
+  async listArchived(req, res) {
+    try {
+      const tasks = await this.taskService.listArchivedTasks(req.user.id);
+      this.handleSuccess(res, tasks, 200);
+    } catch (error) {
+      this.handleError(error, res, 'TaskController.listArchived');
     }
   }
 
@@ -46,6 +58,31 @@ export class TaskController extends BaseController {
       this.handleSuccess(res, task, 200);
     } catch (error) {
       this.handleError(error, res, 'TaskController.update');
+    }
+  }
+
+  /**
+   * Arquiva em lote todas as tarefas concluídas
+   */
+  async archiveCompleted(req, res) {
+    try {
+      const result = await this.taskService.archiveCompletedTasks(req.user.id);
+      this.handleSuccess(res, result, 200);
+    } catch (error) {
+      this.handleError(error, res, 'TaskController.archiveCompleted');
+    }
+  }
+
+  /**
+   * Reativa uma tarefa arquivada
+   */
+  async unarchive(req, res) {
+    try {
+      const { id } = req.params;
+      const task = await this.taskService.unarchiveTask(id, req.user.id);
+      this.handleSuccess(res, task, 200);
+    } catch (error) {
+      this.handleError(error, res, 'TaskController.unarchive');
     }
   }
 

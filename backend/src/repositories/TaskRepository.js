@@ -7,10 +7,13 @@ import prisma from '../database.js';
 
 export class TaskRepository {
   /**
-   * Retorna todas as tarefas de um usuário
+   * Retorna as tarefas de um usuário, filtrando por arquivadas ou ativas
    */
-  async findAllByUser(userId) {
-    return prisma.task.findMany({ where: { userId } });
+  async findAllByUser(userId, { archived = false } = {}) {
+    return prisma.task.findMany({
+      where: { userId, archived },
+      ...(archived && { orderBy: { archivedAt: 'desc' } }),
+    });
   }
 
   /**
@@ -32,6 +35,18 @@ export class TaskRepository {
    */
   async update(id, data) {
     return prisma.task.update({ where: { id }, data });
+  }
+
+  /**
+   * Arquiva em lote todas as tarefas concluídas (e ainda não arquivadas) do usuário.
+   * Retorna a quantidade de tarefas arquivadas.
+   */
+  async archiveCompletedByUser(userId) {
+    const result = await prisma.task.updateMany({
+      where: { userId, status: 'COMPLETED', archived: false },
+      data: { archived: true, archivedAt: new Date() },
+    });
+    return result.count;
   }
 
   /**

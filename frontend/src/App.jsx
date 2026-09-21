@@ -6,6 +6,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import Dashboard from './pages/Dashboard';
+import Archived from './pages/Archived';
 
 function PrivateRoute({ children }) {
   const { signed, loading } = useAuth();
@@ -28,6 +29,7 @@ export default function App() {
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verify" element={<VerifyEmail />} />
           <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/archived" element={<PrivateRoute><Archived /></PrivateRoute>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
